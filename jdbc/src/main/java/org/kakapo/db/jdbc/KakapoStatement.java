@@ -5,8 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class KakapoStatement implements Statement {
+    private static final Logger LOG = LogManager.getLogger(KakapoStatement.class);
+
     private final KakapoConnection connection;
 
     KakapoStatement(KakapoConnection connection) {
@@ -15,14 +19,14 @@ public class KakapoStatement implements Statement {
 
     @Override
     public KakapoResultSet executeQuery(String sql) throws SQLException {
-        System.out.println(">>> KakapoStatement#executeQuery: " + sql);
+        LOG.info(">>> KakapoStatement#executeQuery: {}", sql);
 
         return new KakapoResultSet(this);
     }
 
     @Override
     public int executeUpdate(String sql) throws SQLException {
-        System.out.println(">>> KakapoStatement#executeUpdate: " + sql);
+        LOG.info(">>> KakapoStatement#executeUpdate: {}", sql);
 
         return 0;
     }
@@ -89,7 +93,7 @@ public class KakapoStatement implements Statement {
 
     @Override
     public boolean execute(String sql) throws SQLException {
-        System.out.println(">>> KakapoStatement#execute: " + sql);
+        LOG.info(">>> KakapoStatement#execute: {}", sql);
 
         return false;
     }

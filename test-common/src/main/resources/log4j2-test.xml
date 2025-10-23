@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+  <Properties>
+    <Property name="log.pattern.console">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%t] %highlight{%c{1.}}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=blue} - %msg%n</Property>
+    <Property name="log.pattern.file">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%t] %c{1} - %msg%n</Property>
+  </Properties>
+
+  <Appenders>
+    <!-- Color Console Appender -->
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${log.pattern.console}" disableAnsi="false"/>
+    </Console>
+
+    <!-- Module-specific file appender -->
+    <RollingFile name="ModuleFile"
+      fileName="target/test-logs/${sys:module.name:-all}/tests.log"
+      filePattern="target/test-logs/${sys:module.name:-all}/tests-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout pattern="${log.pattern.file}"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="10 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="5"/>
+    </RollingFile>
+
+    <!-- Separate appender for slow tests -->
+    <File name="SlowTests" fileName="target/test-logs/slow-tests.log">
+      <PatternLayout pattern="${log.pattern.file}"/>
+    </File>
+  </Appenders>
+
+  <Loggers>
+    <!-- Application packages - debug in tests -->
+    <Logger name="org.kakapo" level="WARN" additivity="false">
+      <AppenderRef ref="Console" level="WARN"/>
+      <AppenderRef ref="ModuleFile"/>
+    </Logger>
+
+    <!-- Test packages -->
+    <Logger name="org.kakapo" level="INFO"/>
+
+    <!-- Framework noise reduction -->
+    <Logger name="org.apache" level="WARN"/>
+
+    <!-- Slow tests logger -->
+    <Logger name="SLOW_TESTS" level="INFO" additivity="false">
+      <AppenderRef ref="SlowTests"/>
+    </Logger>
+
+    <Root level="INFO">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="ModuleFile"/>
+    </Root>
+  </Loggers>
+</Configuration>

@@ -14,11 +14,12 @@ import java.util.ServiceLoader;
 import java.util.ServiceLoader.Provider;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.kakapo.db.internal.test.common.BaseKakapoDbAbstractTest;
 import org.kakapo.db.jdbc.KakapoConnection;
 import org.kakapo.db.jdbc.KakapoDriver;
 
 /** For {@link KakapoDriver} testing. */
-public class KakapoDriverTest {
+public class KakapoDriverTest extends BaseKakapoDbAbstractTest {
     @Test
     void driverAvailableThroughServiceLoader() {
         try (Stream<Provider<Driver>> stream = ServiceLoader.load(Driver.class).stream()) {

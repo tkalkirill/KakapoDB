@@ -3,11 +3,12 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import org.junit.jupiter.api.Test;
+import org.kakapo.db.internal.test.common.BaseKakapoDbAbstractTest;
 import org.kakapo.db.jdbc.KakapoConnection;
 import org.kakapo.db.jdbc.KakapoStatement;
 
 /** For {@link KakapoConnection} testing. */
-public class KakapoConnectionTest {
+public class KakapoConnectionTest extends BaseKakapoDbAbstractTest {
     @Test
     void createStatement() throws Exception {
         try (
